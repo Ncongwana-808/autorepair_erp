@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel ,ConfigDict
 from typing import Optional
 
 
@@ -15,5 +15,4 @@ class CustomerResponse(BaseModel):
     phone: Optional[str] = None
     address: Optional[str] = None
 
-    class Config:
-        orm_mode = True
+model_config = ConfigDict(from_attributes=True) # Enable ORM mode for Pydantic v2 
