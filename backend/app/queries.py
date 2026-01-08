@@ -55,10 +55,12 @@ def create_user(conn, username: str, password_hash: str, role: str) -> Optional[
             cursor.execute(query, (username, password_hash, role))
             conn.commit()  # Save changes to database
             return cursor.fetchone()  # Get the returned row as dict
+        
     except psycopg.errors.UniqueViolation:
         # This happens if username already exists (UNIQUE constraint)
         conn.rollback()  # Undo the failed transaction
         return None
+    
     except Exception as e:
         conn.rollback()
         print(f"Error creating user: {e}")
@@ -90,6 +92,7 @@ def get_user_by_username(conn, username: str) -> Optional[Dict[str, Any]]:
             """
             cursor.execute(query, (username,))
             return cursor.fetchone()
+        
     except Exception as e:
         print(f"Error fetching user: {e}")
         return None
@@ -111,6 +114,7 @@ def get_user_by_id(conn, user_id: int) -> Optional[Dict[str, Any]]:
             """
             cursor.execute(query, (user_id,))
             return cursor.fetchone()
+        
     except Exception as e:
         print(f"Error fetching user by ID: {e}")
         return None
